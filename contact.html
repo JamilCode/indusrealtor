@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/x-icon" href="favicon.jpg">
+    <title>Car Trade Center</title>
+	<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+	<!-- Navigation Bar Starts -->
+	<nav>
+		<img src="favicon.jpg" onclick="goToHome()" />
+		<h1>Property Inquiry</h1>
+	</nav>
+	<!-- Navigation Bar Ends -->
+	
+	<!-- After Submit Message -->
+	<div class="container" id="container">
+		<div id="thankYouBanner">
+			<h1>Thank You</h1>
+			<h3>We will contact you soon</h3>
+		</div>
+	</div>
+	<img id="loadingForm" style="display: none;width: 50%;margin: auto;" src="loadingForm.gif">
+	<!-- After Submit Message -->
+	
+	<!-- Lead Form -->
+    <form name="Property Inquiry">
+        <input type="text" id="name" name="name" placeholder="Your Name" required><br>
+        <input type="tel" id="phone" name="phone" placeholder="Your Contact Number" pattern="[0-9]{10}" required><br>
+        <input type="submit" value="Submit">
+    </form>
+	<!-- Lead Form -->
+	
+	<script>
+		const scriptURL ="https://script.google.com/macros/s/AKfycbzbFsKv5cu3T6VnC5b8EbXV-4eBMX3_wbaRGYbzXKuklOn8mjqIqE5kwwy-gU3XEb2kmg/exec";
+		const thankYou = document.getElementById("thankYouBanner");
+		const container = document.getElementById("container");
+		const form = document.forms["Property Inquiry"];
+		const loadingForm = document.getElementById("loadingForm");
+		function afterSubmit() {
+            form.reset();
+			thankYou.style.display = "block";
+			container.style.display = "block";
+			loadingForm.style.display = "none";
+        }
+		form.addEventListener("submit", (e) => {
+			e.preventDefault();
+			loadingForm.style.display = "block";
+			form.style.display = "none";
+			fetch(scriptURL, { method: "POST", body: new FormData(form) })
+			.then((response) => {
+				console.log("Success!", response);
+				afterSubmit();
+			})
+			.catch((error) => {
+				console.error("Error!", error.message);
+      // Additional function call if there's an error with the fetch
+			});
+		});
+	</script>
+</body>
+</html>
